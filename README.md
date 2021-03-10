@@ -1,7 +1,7 @@
 
 # Description
 
-This is an Ansible script that should help you build & install ros2 on multiple devices with just one command.
+This is an Ansible script that should help you build & install ros2 on multiple devices (Raspberry Pi) with ***just one command***.
 
 # What is does?
 
