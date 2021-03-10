@@ -1,0 +1,83 @@
+---
+
+- name: Make apt update
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 # one day
+
+- name: Install locales
+  become: true
+  apt:
+    state: present
+    name:
+      - locales
+
+- name: Set the locale
+  become: true
+  lineinfile: 
+    dest: /etc/default/locale
+    regexp: "LC_ALL"
+    line: "LC_ALL=en_US.UTF-8"
+
+- name: Setup the environemnt variable
+  shell: "echo $LANG"
+  environment: 
+    LANG: en_US.UTF-8
+
+- name: Generate locales
+  become: true
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- include: add_ros2_repo.yml
+
+- include: install_packages.yml
+
+- include: download_ros2_repo.yml
+
+- name: Check if repo is already imported
+  find:
+    path: /home/{{ device_user }}/ros2/src
+  register: filesFound
+
+- name: Unpack the repo
+  shell: "vcs import src < {{ ros2_repo_file }}"
+  args:
+    chdir: /home/{{ device_user }}/ros2
+  when: filesFound.matched == 0
+
+- name: Remove /etc/ros/rosdep/sources.list.d/20-default.list
+  become: true  
+  file:
+    path: /etc/ros/rosdep/sources.list.d/20-default.list
+    state: absent
+
+- name: rosdep init
+  become: true 
+  shell: 'rosdep init'
+
+- name: rosdep update
+  become: true 
+  shell: 'rosdep update'
+
+- name: Install dependencies using rosdep
+  become: true
+  shell: 'rosdep install --from-paths /home/{{ device_user }}/ros2/src --ignore-src --rosdistro {{ ros2_distro }} -y --skip-keys "console_bridge fastcdr fastrtps libopensplice67 libopensplice69 rti-connext-dds-5.3.1 urdfdom_headers"'
+
+- include: workarounds.yml
+
+- name: Build ros2  
+  shell: "colcon build --symlink-install"
+  args:
+    chdir: /home/{{ device_user }}/ros2
+
+- name: Change owner and group to {{ device_user }} and set files to 644 and dirs to 755
+  file: dest=/home/{{ device_user }}/ros2 owner={{ device_user }} group={{ device_user }} mode=u=rwX,g=rX,o=rX recurse=yes
+
+- name: Add sourcing ros2 {{ ros2_distro }} to .bashrc
+  ansible.builtin.lineinfile:
+    path: /home/{{ device_user }}/.bashrc
+    line: "source ~/ros2/install/setup.bash"

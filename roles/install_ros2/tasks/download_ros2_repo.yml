@@ -1,0 +1,18 @@
+---
+
+- name: Create the directory for ros2
+  file:
+    path: /home/{{ device_user }}/ros2/src
+    state: directory
+
+- name: Check if file with repo already exists
+  stat:
+    path: /home/{{ device_user }}/ros2/{{ ros2_repo_file }}
+  register: stat_result
+
+- name: Download repo if not exists yet
+  get_url:
+    url: '{{ ros2_repo_url }}/{{ ros2_repo_file }}'
+    dest: /home/{{ device_user }}/ros2
+    mode: 0755
+  when: not stat_result.stat.exists

@@ -1,0 +1,14 @@
+---
+- name: Install ros2 on your Raspberry Pi
+  hosts: devices
+  become: true
+  vars:
+    device_user: pi # mandatory
+    
+  roles:
+  
+    - { role: change_swap, swap_size: 1024 }
+    
+    - install_ros2
+    
+    - { role: change_swap, swap_size: 100 }

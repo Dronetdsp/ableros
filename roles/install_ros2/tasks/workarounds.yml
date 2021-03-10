@@ -1,0 +1,15 @@
+- name: Ament rviz
+  copy:
+    content: ""
+    dest: /home/{{ device_user }}/ros2/src/ros2/rviz/AMENT_IGNORE
+    force: no
+    group: "{{ device_user }}"
+    owner: "{{ device_user }}"
+    mode: 0774
+
+- name: Update the CMakeLists, add -latomic
+  replace:
+    path: /home/{{ device_user }}/ros2/src/ros2/rcutils/CMakeLists.txt
+    regexp: '^\s+target_link_libraries\(test_atomics_executable\s+\${PROJECT_NAME}\)(.*)$'
+    replace: '  target_link_libraries(test_atomics_executable ${PROJECT_NAME} -latomic)'
+    

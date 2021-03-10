@@ -1,0 +1,21 @@
+---
+
+- name: Add GPG key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc
+    state: present
+
+- name: Create file
+  become: true
+  file:
+    path: /etc/apt/sources.list.d/ros2-latest.list
+    state: touch
+    mode: 0644
+
+- name: Add repository to the source list
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/ros2-latest.list
+    line: "deb [arch=armhf] http://packages.ros.org/ros2/ubuntu {{ansible_distribution_release}} main"
+    mode: 0644

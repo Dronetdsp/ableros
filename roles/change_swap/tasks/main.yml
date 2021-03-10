@@ -1,0 +1,25 @@
+---
+
+- name: Check if swap enabled
+  shell: swapon -s | wc -l
+  register: swap_enabled
+
+- name: Disable swap
+  shell: dphys-swapfile swapoff
+  when: swap_enabled.stdout != "1"
+
+- name: Change the size of the swap and reboot the system
+  replace:
+    path: /etc/dphys-swapfile
+    regexp: CONF_SWAPSIZE=\d+
+    replace: CONF_SWAPSIZE={{swap_size}}
+  notify: reboot
+
+- name: Setup the swap, turn it on 
+  shell: "{{ item }}"
+  with_items:
+    - dphys-swapfile setup
+    - dphys-swapfile swapon
+
+- meta: flush_handlers
+  

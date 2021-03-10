@@ -1,0 +1,4 @@
+---
+ros2_distro: eloquent
+ros2_repo_url: https://raw.githubusercontent.com/ros2/ros2/eloquent/
+ros2_repo_file: ros2.repos
