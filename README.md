@@ -14,10 +14,11 @@ But before it starts it changes the size of swap and after the build it changes 
 
 Please make sure that your devices are ready with enough free space (~4GB).
 1. SSH is enabled,
-2. keys are generated and distributed, or use password,
+2. Keys are generated and distributed, or use password,
 3. Ansible is installed on you computer,
 4. Devices are up and running,
-5. Read known issues.
+5. Read known issues,
+6. Update the inventory.yml file.
 
 _(I won't cover these topics they could be extensive, please use search engine.)_
 
@@ -28,6 +29,10 @@ Just download those files, change at least the inventory file.
 And run it with following command:
 ```
 ansible-playbook -i inventory.yml main.yml
+```
+or with passing password (requires: sshpass package)
+```
+ansible-playbook -i inventory.yml main.yml -k
 ```
 
 # Tested
