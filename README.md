@@ -24,7 +24,7 @@ _(I won't cover these topics they could be extensive, please use search engine.)
 
 # How to
 
-Just download those files, change at least the inventory file.
+Just checkout(download) those files, change at least the inventory file.
 
 And run it with following command:
 ```
@@ -34,6 +34,11 @@ or with passing password (requires: sshpass package)
 ```
 ansible-playbook -i inventory.yml main.yml -k
 ```
+With those two variables you can change the release of ros2:
+- ros2_distro
+- ros2_repo_url
+See default.yml for details.
+
 
 # Tested
 
