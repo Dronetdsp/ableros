@@ -3,7 +3,7 @@
 
 This is an Ansible script that should help you build & install ros2 on multiple devices (Raspberry Pi) with ***just one command***.
 
-# What is does?
+# What it is does?
 
 It should do exactly those steps: https://docs.ros.org/en/eloquent/Installation/Linux-Development-Setup.html
 
