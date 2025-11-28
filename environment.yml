@@ -1,0 +1,37 @@
+name: cabbage-collector
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - jupyterlab
+  - ipywidgets
+  - pytorch
+  - torchvision
+  - torchaudio
+  - cudatoolkit=11.8  # remove or adjust if no NVIDIA GPU is present
+  - opencv
+  - vtk
+  - trimesh
+  - open3d
+  - pytorch3d
+  - pip:
+      - rosbag2-py
+      - nuscenes-devkit
+      - pyquaternion
+      - plotly
+      - tqdm
+      - omegaconf
+      - hydra-core
+      - python-lzf
+      - imgaug
+      - einops
+      - nerfstudio

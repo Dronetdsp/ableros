@@ -40,6 +40,31 @@ With those two variables you can change the release of ros2:
 
 See default.yml for details.
 
+# Experiment planning & analysis
+
+For data-heavy field experiments (e.g., autonomous cabbage collection), a reproducible workflow is documented in `docs/experiment_plan.md`. It covers terrain matrix, RPM regimes, measurement points, and a simulation-to-real pipeline using 3D Gaussian Splatting.
+
+## Lightweight simulation (no ROS required)
+
+Generate synthetic traversals across the full terrain × RPM matrix using the included Python model:
+
+```
+python simulations/cabbage_simulation.py --output data/simulated_traversals.parquet --segment-length 20 --dt 0.05 --seed 42
+```
+
+- Outputs parquet (default) or CSV if `--format csv` is provided.
+- Telemetry columns cover distance, speed, acceleration, vibration, and control error at 20 Hz, with flags on the official measurement points (1 m, 3 m, 5 m, 7 m, 10 m).
+- Use this to validate analysis notebooks and plotting before connecting to ROS 2 bags.
+
+To process logs and train perception models, create the dedicated conda environment:
+
+```
+conda env create -f environment.yml
+conda activate cabbage-collector
+```
+
+Use this environment for ROS 2 bag parsing, visualization, and AI/3D reconstruction tooling.
+
 
 # Tested
 
